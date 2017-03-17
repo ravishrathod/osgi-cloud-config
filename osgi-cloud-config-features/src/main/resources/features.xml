@@ -1,0 +1,16 @@
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="camel-2.15.2">
+
+    <feature name="osgi-vcap-config" version="1.0.0-SNAPSHOT" start-level="49">
+        <bundle dependency="true">wrap:mvn:com.jayway.jsonpath/json-path/2.2.0</bundle>
+        <bundle dependency="true">wrap:mvn:net.minidev/json-smart/2.2.1</bundle>
+        <bundle dependency="true">wrap:mvn:net.minidev/accessors-smart/1.1</bundle>
+        <bundle dependency="true">wrap:mvn:org.ow2.asm/asm/5.0.3</bundle>
+        <bundle dependency="true">wrap:mvn:org.apache.tapestry/tapestry-json/5.4.1</bundle>
+        <bundle>mvn:com.snowfort/osgi-vcap-config/1.0.0-SNAPSHOT</bundle>
+    </feature>
+
+    <feature name="osgi-cloud-connectors" version="1.0.0-SNAPSHOT" start-level="50">
+        <bundle>mvn:com.snowfort/osgi-cloud-connectors/1.0.0-SNAPSHOT</bundle>
+    </feature>
+
+</features>
