@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <bean id="vcap" class="com.snowfort.felix.cloudproperties.VcapServicesProperties" />
+
+    <bean id="dataSource" class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource">
+        <property name="url" value="${vcap.var('cleardb[0].credentials.jdbcUrl')}"/>
+        <property name="user" value="${vcap.var('cleardb[0].credentials.name')}"/>
+        <property name="password" value="${vcap.var('cleardb[0].credentials.password')}"/>
+    </bean>
+
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+        <route>
+            <from uri="timer:test" />
+            <transform>
+                <method ref="dataSource" method="getUser" />
+            </transform>
+            <log message="Bean configured with VCAP_SERVICES username ${body}" loggingLevel="INFO"/>
+            <to uri="log:test" />
+        </route>
+    </camelContext>
+
+</blueprint>
