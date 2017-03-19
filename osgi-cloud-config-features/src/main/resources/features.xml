@@ -5,8 +5,4 @@
         <bundle>mvn:com.snowfort/osgi-vcap-config/1.0.0-SNAPSHOT</bundle>
     </feature>
 
-    <feature name="osgi-cloud-connectors" version="1.0.0-SNAPSHOT" start-level="50">
-        <bundle>mvn:com.snowfort/osgi-cloud-connectors/1.0.0-SNAPSHOT</bundle>
-    </feature>
-
 </features>

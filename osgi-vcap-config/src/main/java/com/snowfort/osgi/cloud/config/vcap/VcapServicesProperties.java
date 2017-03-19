@@ -53,20 +53,20 @@ public class VcapServicesProperties {
 
 
 
-//            String jdbcUrl = var("cleardb[0].credentials.jdbcUrl");
-//            logger.info("Setting vcap.services.mysql.jdbcUrl to " + jdbcUrl);
-//            configProps.put("mysql.jdbcUrl", jdbcUrl);
-//
-//            String username = var("cleardb[0].credentials.username");
-//            logger.info("Setting vcap.services.mysql.username to " + username);
-//            configProps.put("mysql.username", username);
-//
-//            String password = var("cleardb[0].credentials.password");
-//            logger.info("Setting vcap.services.mysql.password to " + password);
-//            configProps.put("mysql.password", password);
-//
-//            config.update(configProps);
-//            logger.info("config:  " + config.toString());
+            String jdbcUrl = "URLVAL";
+            logger.info("Setting vcap.services.mysql.jdbcUrl to " + jdbcUrl);
+            configProps.put("mysql.jdbcUrl", jdbcUrl);
+
+            String username = "USERNAMEVAL";
+            logger.info("Setting vcap.services.mysql.name to " + username);
+            configProps.put("mysql.name", username);
+
+            String password = "PASSWORDVAL";
+            logger.info("Setting vcap.services.mysql.password to " + password);
+            configProps.put("mysql.password", password);
+
+            config.update(configProps);
+            logger.info("config:  " + config.toString());
         }
     }
 
@@ -80,7 +80,7 @@ public class VcapServicesProperties {
         } else if (element.isJsonArray()) {
             JsonArray array = element.getAsJsonArray();
             for (int i=0; i < array.size(); i++) {
-                addJsonPropertiesAsConfig(configProps, elementPath+"["+i+"]", array.get(i));
+                addJsonPropertiesAsConfig(configProps, elementPath+"_"+i, array.get(i));
             }
         }
     }

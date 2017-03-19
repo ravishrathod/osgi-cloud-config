@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+First, start Karaf with some additional VCAP environment variables:
+VCAP_APPLICATION="{}" VCAP_SERVICES='{ "cleardb": [ { "credentials": { "hostname": "us-cdbr-iron-east-03.cleardb.net", "jdbcUrl": "jdbc:mysql://us-cdbr-iron-east-03.cleardb.net/ad_b9eb3f3f82ef228?user=b69bed0a151d22\u0026password=3a5ac732", "name": "ad_b9eb3f3f82ef228", "password": "3a5ac732", "port": "3306", "uri": "mysql://b69bed0a151d22:3a5ac732@us-cdbr-iron-east-03.cleardb.net:3306/ad_b9eb3f3f82ef228?reconnect=true", "username": "b69bed0a151d22" }, "label": "cleardb", "name": "test-mysql", "plan": "spark", "provider": null, "syslog_drain_url": null, "tags": [ "Cloud Databases", "Data Stores", "Web-based", "Online Backup \u0026 Storage", "Single Sign-On", "Cloud Security and Monitoring", "Certified Applications", "Developer Tools", "Data Store", "Development and Test Tools", "Buyable", "relational", "mysql" ], "volume_mounts": [] } ] }' bin/karaf
+
+Then copy this file to the deploy folder
+-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
+
+    <cm:property-placeholder persistent-id="vcap.services" update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="cleardb_0.credentials.jdbcUrl" value="defaultJdbc"/>
+            <cm:property name="cleardb_0.credentials.name" value="defaultUsername"/>
+            <cm:property name="cleardb_0.credentials.password" value="defaultPassword"/>
+            <cm:property name="cleardb_0.credentials.missingProp" value="defaultValue"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+        <route>
+            <from uri="timer:test" />
+            <log message="vcap.services.cleardb_0.credentials.jdbcUrl:    {{vcap.services.cleardb_0.credentials.jdbcUrl}}" loggingLevel="INFO"/>
+            <log message="vcap.services.cleardb_0.credentials.name:       {{vcap.services.cleardb_0.credentials.name}}" loggingLevel="INFO"/>
+            <log message="vcap.services.cleardb_0.credentials.password:       {{vcap.services.cleardb_0.credentials.password}}" loggingLevel="INFO"/>
+            <log message="vcap.services.cleardb_0.credentials.missingProp:       {{cleardb_0.credentials.missingProp}}" loggingLevel="INFO"/>
+        </route>
+    </camelContext>
+
+</blueprint>

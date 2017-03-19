@@ -11,9 +11,7 @@
     <name>Snow Fort :: OSGi Cloud Config :: Parent</name>
 
     <modules>
-        <module>osgi-cloud-connectors</module>
         <module>osgi-vcap-config</module>
-        <module>osgi-cloud-config-tests</module>
         <module>osgi-cloud-config-features</module>
     </modules>
 
