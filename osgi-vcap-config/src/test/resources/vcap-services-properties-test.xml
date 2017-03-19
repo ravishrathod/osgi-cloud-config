@@ -8,7 +8,7 @@ Then copy this file to the deploy folder
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
 
-    <cm:property-placeholder persistent-id="vcap.services" update-strategy="reload">
+    <cm:property-placeholder persistent-id="vcap.services">
         <cm:default-properties>
             <cm:property name="cleardb_0.credentials.jdbcUrl" value="defaultJdbc"/>
             <cm:property name="cleardb_0.credentials.name" value="defaultUsername"/>
@@ -20,9 +20,9 @@ Then copy this file to the deploy folder
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <route>
             <from uri="timer:test" />
-            <log message="vcap.services.cleardb_0.credentials.jdbcUrl:    {{vcap.services.cleardb_0.credentials.jdbcUrl}}" loggingLevel="INFO"/>
-            <log message="vcap.services.cleardb_0.credentials.name:       {{vcap.services.cleardb_0.credentials.name}}" loggingLevel="INFO"/>
-            <log message="vcap.services.cleardb_0.credentials.password:       {{vcap.services.cleardb_0.credentials.password}}" loggingLevel="INFO"/>
+            <log message="vcap.services.cleardb_0.credentials.jdbcUrl:    {{cleardb_0.credentials.jdbcUrl}}" loggingLevel="INFO"/>
+            <log message="vcap.services.cleardb_0.credentials.name:       {{cleardb_0.credentials.name}}" loggingLevel="INFO"/>
+            <log message="vcap.services.cleardb_0.credentials.password:       {{cleardb_0.credentials.password}}" loggingLevel="INFO"/>
             <log message="vcap.services.cleardb_0.credentials.missingProp:       {{cleardb_0.credentials.missingProp}}" loggingLevel="INFO"/>
         </route>
     </camelContext>

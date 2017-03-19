@@ -35,9 +35,9 @@ public class EnvJsonProperties {
     }
 
     public void init() throws Exception {
-        String envJson = System.getenv(environmentVariable);
-        if (null != envJson) {
-            logger.info("Initializing configuration from JSON in "+environmentVariable+":  " + envJson);
+        String envJsonStr = System.getenv(environmentVariable);
+        if (null != envJsonStr) {
+            logger.info("Initializing configuration with environmentVariable:  " + envJsonStr);
 
             // Set up a configuration scoped PID=<prefix>.  This allows users to grab these values in their blueprints
             // by setting up a <properties-placeholder persistent-id="..."> to pull out the relevant values and set
@@ -48,12 +48,16 @@ public class EnvJsonProperties {
             if (configProps == null) {
                 configProps = new Hashtable<String, Object>();
             }
+
+            // iterate over all JSON properties in environmentVariable and if it's a JsonPrimitive (leaf node),
+            // create a flattened vcap.services.* config property based on the value.
+            JsonElement envJson = new JsonParser().parse(envJsonStr);
+            addJsonPropertiesAsConfig(configProps, "", envJson);
+
             outputConfig(configProps);
 
-            // Iterate over all properties in the environmentVariable JSON and if it's a JsonPrimitive (leaf node),
-            // create a flattened <prefix>.<json path> config property based on the value.
-            JsonElement vcapServices = new JsonParser().parse(envJson);
-            addJsonPropertiesAsConfig(configProps, "", vcapServices);
+            config.update(configProps);
+            logger.info("config:  " + config.toString());
 
             // Output the loaded variables to the log for debugging.
             outputConfig(configProps);

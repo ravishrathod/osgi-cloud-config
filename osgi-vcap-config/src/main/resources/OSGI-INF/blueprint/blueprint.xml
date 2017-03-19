@@ -3,24 +3,16 @@
 
     <reference id="configAdmin" interface="org.osgi.service.cm.ConfigurationAdmin"/>
 
-    <bean id="vcap" class="com.snowfort.osgi.cloud.config.vcap.VcapServicesProperties" init-method="init">
-        <property name="configurationAdmin" ref="configAdmin"/>
-    </bean>
-
-    <!--
-    <reference id="configAdmin" interface="org.osgi.service.cm.ConfigurationAdmin"/>
-
-    <bean id="vcapServices" class="com.snowfort.osgi.cloud.config.vcap.EnvJsonProperties" init-method="init">
+    <bean id="vcapServicesProperties" class="com.snowfort.osgi.cloud.config.vcap.EnvJsonProperties" init-method="init">
         <argument value="VCAP_SERVICES"/>
         <argument value="vcap.services"/>
         <property name="configurationAdmin" ref="configAdmin"/>
     </bean>
 
-    <bean id="vcapApplication" class="com.snowfort.osgi.cloud.config.vcap.EnvJsonProperties" init-method="init">
+    <bean id="vcapApplicationProperties" class="com.snowfort.osgi.cloud.config.vcap.EnvJsonProperties" init-method="init">
         <argument value="VCAP_APPLICATION"/>
         <argument value="vcap.application"/>
         <property name="configurationAdmin" ref="configAdmin"/>
     </bean>
-    -->
 
 </blueprint>
