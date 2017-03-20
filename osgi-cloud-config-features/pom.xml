@@ -10,7 +10,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>osgi-cloud-config-features</artifactId>
-    <packaging>pom</packaging>
+    <!--<packaging>pom</packaging>-->
 
     <name>Snow Fort :: OSGi Cloud Config :: Features</name>
 
@@ -19,11 +19,17 @@
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>1.9</version>
                 <executions>
                     <execution>
                         <id>attach-artifacts</id>
@@ -34,7 +40,7 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>src/main/resources/features.xml</file>
+                                    <file>${project.build.outputDirectory}/features.xml</file>
                                     <type>xml</type>
                                     <classifier>features</classifier>
                                 </artifact>

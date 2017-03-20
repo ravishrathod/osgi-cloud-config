@@ -13,7 +13,17 @@
     <modules>
         <module>osgi-vcap-config</module>
         <module>osgi-cloud-config-features</module>
+        <module>example</module>
     </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <osgi.version>5.0.0</osgi.version>
+        <gson.version>2.3.1</gson.version>
+    </properties>
 
     <build>
         <plugins>

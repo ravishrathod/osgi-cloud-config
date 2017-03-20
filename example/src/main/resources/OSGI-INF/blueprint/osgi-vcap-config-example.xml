@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
+
+    <cm:property-placeholder persistent-id="com.snowfort.osgi.cloud.config.vcap.example" update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="cassandra.datacenter" value="datacenter1"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+
+    <reference id="configurationAdmin" interface="org.osgi.service.cm.ConfigurationAdmin" />
+
+    <bean id="vCapServicesLoader" class="com.snowfort.osgi.cloud.config.vcap.VCapServicesLoader">
+        <argument value="com.snowfort.osgi.cloud.config.vcap.example" />
+        <argument ref="configurationAdmin" />
+    </bean>
+
+    <bean id="cassandraConnector" class="com.snowfort.osgi.cloud.config.vcap.example.CassandraConnector" depends-on="vCapServicesLoader">
+        <argument value="${cassandra_0.credentials.node_ips}" />
+        <argument value="${cassandra_0.credentials.username}" />
+        <argument value="${cassandra_0.credentials.password}" />
+        <argument value="${cassandra.datacenter}" />
+    </bean>
+
+
+</blueprint>

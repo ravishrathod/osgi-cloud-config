@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <reference id="configAdmin" interface="org.osgi.service.cm.ConfigurationAdmin"/>
+    <!--<reference id="configAdmin" interface="org.osgi.service.cm.ConfigurationAdmin"/>-->
 
-    <bean id="vcapServicesProperties" class="com.snowfort.osgi.cloud.config.vcap.EnvJsonProperties" init-method="init">
-        <argument value="VCAP_SERVICES"/>
-        <argument value="vcap.services"/>
-        <property name="configurationAdmin" ref="configAdmin"/>
-    </bean>
+    <!--<bean id="vcapServicesProperties" class="com.snowfort.osgi.cloud.config.vcap.EnvJsonPropertiesLoader" init-method="init">-->
+        <!--<argument value="VCAP_SERVICES"/>-->
+        <!--<argument value="vcap.services"/>-->
+        <!--<property name="configurationAdmin" ref="configAdmin"/>-->
+    <!--</bean>-->
 
-    <bean id="vcapApplicationProperties" class="com.snowfort.osgi.cloud.config.vcap.EnvJsonProperties" init-method="init">
-        <argument value="VCAP_APPLICATION"/>
-        <argument value="vcap.application"/>
-        <property name="configurationAdmin" ref="configAdmin"/>
-    </bean>
-
+    <!--<bean id="vcapApplicationProperties" class="com.snowfort.osgi.cloud.config.vcap.EnvJsonPropertiesLoader" init-method="init">-->
+        <!--<argument value="VCAP_APPLICATION"/>-->
+        <!--<argument value="vcap.application"/>-->
+        <!--<property name="configurationAdmin" ref="configAdmin"/>-->
+    <!--</bean>-->
 </blueprint>

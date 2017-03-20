@@ -1,8 +1,13 @@
-<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="camel-2.15.2">
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="osgi-cloud-config-${project.version}">
 
-    <feature name="osgi-vcap-config" version="1.0.0-SNAPSHOT" start-level="49">
-        <bundle dependency="true">mvn:com.google.code.gson/gson/2.6.2</bundle>
-        <bundle>mvn:com.snowfort/osgi-vcap-config/1.0.0-SNAPSHOT</bundle>
+    <feature name="osgi-vcap-config" version="${project.version}">
+        <bundle dependency="true">mvn:com.google.code.gson/gson/${gson.version}</bundle>
+        <bundle>mvn:com.snowfort/osgi-vcap-config/${project.version}</bundle>
+    </feature>
+
+    <feature name="osgi-vcap-config-example" version="${project.version}">
+        <feature>osgi-vcap-config</feature>
+        <bundle>mvn:com.snowfort/osgi-vcap-config-example/${project.version}</bundle>
     </feature>
 
 </features>

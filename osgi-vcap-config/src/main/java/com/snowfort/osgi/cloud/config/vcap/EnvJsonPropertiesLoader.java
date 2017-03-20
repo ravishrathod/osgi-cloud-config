@@ -8,45 +8,41 @@ import org.osgi.service.cm.ConfigurationAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class EnvJsonProperties {
+public class EnvJsonPropertiesLoader {
 
-    private static final Logger logger = LoggerFactory.getLogger(EnvJsonProperties.class);
+    private static final Logger logger = LoggerFactory.getLogger(EnvJsonPropertiesLoader.class);
 
     private String environmentVariable;
-    private String prefix;
+    private String pid;
     private ConfigurationAdmin configAdmin;
 
 
-    public EnvJsonProperties(String environmentVariable, String prefix) {
+    public EnvJsonPropertiesLoader(String environmentVariable, String pid, ConfigurationAdmin configAdmin) {
         this.environmentVariable = environmentVariable;
-        this.prefix = prefix;
-    }
-
-    public ConfigurationAdmin getConfigurationAdmin() {
-        return configAdmin;
-    }
-
-    public void setConfigurationAdmin(ConfigurationAdmin configAdmin) {
+        this.pid = pid;
         this.configAdmin = configAdmin;
     }
 
-    public void init() throws Exception {
-        String envJsonStr = System.getenv(environmentVariable);
-        if (null != envJsonStr) {
-            logger.info("Initializing configuration with environmentVariable:  " + envJsonStr);
+    public EnvJsonPropertiesLoader() {
+    }
 
-            // Set up a configuration scoped PID=<prefix>.  This allows users to grab these values in their blueprints
+    public Dictionary<String, Object> init() throws Exception {
+        String envJsonStr = getEnvVariableValue();
+        if (null != envJsonStr) {
+            logger.info("Initializing configuration with environmentVariable: {} for pid: {} ", envJsonStr, pid);
+
+            // Set up a configuration scoped PID=<pid>.  This allows users to grab these values in their blueprints
             // by setting up a <properties-placeholder persistent-id="..."> to pull out the relevant values and set
             // defaults if they aren't available in the environment variable JSON.
-            logger.info("Getting existing configuration for PID '"+prefix+"'");
-            Configuration config = configAdmin.getConfiguration(prefix);
+            logger.info("Getting existing configuration for PID '"+ pid +"'");
+
+            Configuration config = configAdmin.getConfiguration(pid);
             Dictionary<String, Object> configProps = config.getProperties();
             if (configProps == null) {
-                configProps = new Hashtable<String, Object>();
+                configProps = new Hashtable<>();
             }
 
             // iterate over all JSON properties in environmentVariable and if it's a JsonPrimitive (leaf node),
@@ -61,7 +57,10 @@ public class EnvJsonProperties {
 
             // Output the loaded variables to the log for debugging.
             outputConfig(configProps);
+            return configProps;
         }
+
+        return null;
     }
 
     private void addJsonPropertiesAsConfig(Dictionary<String, Object> configProps, String elementPath, JsonElement element) {
@@ -78,12 +77,20 @@ public class EnvJsonProperties {
             });
         } else if (element.isJsonArray()) {
             JsonArray array = element.getAsJsonArray();
+            List<String> arrayValues = new ArrayList<>();
             for (int i=0; i < array.size(); i++) {
                 String childElementPath = elementPath+"_"+i;
                 if (elementPath.trim().isEmpty()) {
                     childElementPath = "root_"+i;
                 }
+                if(array.get(i).isJsonPrimitive()){
+                    arrayValues.add(array.get(i).getAsJsonPrimitive().getAsString());
+                }
                 addJsonPropertiesAsConfig(configProps, childElementPath, array.get(i));
+            }
+            if(! arrayValues.isEmpty()) {
+                final String delimitedValue = arrayValues.stream().map(value -> value).collect(Collectors.joining(","));
+                configProps.put(elementPath, delimitedValue);
             }
         }
     }
@@ -96,4 +103,7 @@ public class EnvJsonProperties {
         }
     }
 
+    String getEnvVariableValue() {
+        return System.getenv(environmentVariable);
+    }
 }
